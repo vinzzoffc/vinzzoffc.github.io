@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>🔐 Database Management Vinzz</title>
+  <style>
+    body {
+      background: #000;
+      font-family: monospace;
+      color: #0ff;
+      text-align: center;
+      padding: 30px;
+    }
+    .container {
+      border: 2px solid #0ff;
+      padding: 20px;
+      border-radius: 10px;
+      background: #111;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 15px #0ff;
+    }
+    input, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background: #0ff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00e5ff;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔐 Database Management V2 Vinzz</h2>
+  <div class="container">
+    <h3>🛡️ API Key (Manual Input)</h3>
+    <input type="text" id="apiKey" placeholder="Masukkan API Key Anda">
+    
+    <h3>➕ Tambah Akses</h3>
+    <input type="text" id="nomor" placeholder="Nomor (62...) atau @tag">
+    <input type="text" id="nama" placeholder="Nama Pemilik Akses">
+    <button onclick="tambahAkses()">Tambah Akses</button>
+    
+    <div id="status"></div>
+  </div>
+
+  <script>
+    async function tambahAkses() {
+      const apiKey = document.getElementById('apiKey').value;
+      const nomor = document.getElementById('nomor').value;
+      const nama = document.getElementById('nama').value;
+
+      const res = await fetch('/api/tambah', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey, nomor, nama })
+      });
+
+      const data = await res.json();
+      document.getElementById('status').innerText = data.message || 'Done';
+    }
+  </script>
+</body>
+</html>
