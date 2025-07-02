@@ -68,7 +68,88 @@
 </head>
 <body>
 
-<h1>🔐 Database By VinzzOffc</h1>
+<h1>🔐 Cyber Security Access </h1>
+<div class="container">
+  <h2>🛡️ API Key (Manual Input)</h2>
+  <input type="text" id="apikey" placeholder="Masukkan API Key Anda" />
+
+  <h2>➕ Tambah Akses</h2>
+  <input type="text" id="addNomor" placeholder="Nomor (62...) atau @tag" />
+  <input type="text" id="addNama" placeholder="Nama Pemilik Akses" />
+  <button onclick="addAkses()">Tambah Akses</button>
+  <pre id="addResult"></pre>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Database Manager Vinzz</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #0a0a0a;
+      color: #00ffcc;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #ff0033;
+    }
+    .container {
+      width: 80%;
+      margin: auto;
+      background: #111;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #00ffcc;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      font-size: 16px;
+    }
+    input {
+      background: #222;
+      color: #fff;
+    }
+    button {
+      background: #00ffcc;
+      color: #000;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #009977;
+    }
+    pre {
+      background: #222;
+      padding: 10px;
+      text-align: left;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      margin-top: 10px;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #00ffcc;
+      padding: 8px;
+    }
+    th {
+      background: #333;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔐 Cyber Security Access </h1>
 <div class="container">
   <h2>🛡️ API Key (Manual Input)</h2>
   <input type="text" id="apikey" placeholder="Masukkan API Key Anda" />
@@ -110,7 +191,7 @@
       return;
     }
 
-    const url = `vinzzoffc.github.io`;
+    const url = `https://aksesdbvinzz.pages.dev/add?apikey=${apikey}&nomor=${nomor}&nama=${nama}`;
 
     try {
       const response = await fetch(url);
@@ -131,7 +212,7 @@
       return;
     }
 
-    const url = `vinzzoffc.github.io`;
+    const url = `https://aksesdbvinzz.pages.dev/delete?apikey=${apikey}&nomor=${nomor}`;
 
     try {
       const response = await fetch(url);
@@ -145,7 +226,7 @@
   async function listAkses() {
     const table = document.getElementById("aksesTable");
     const tbody = document.getElementById("aksesList");
-    const url = `https://raw.githubusercontent.com/vinzzoffc/vinzzoffc.github.io-list/refs/heads/main/list.md`;
+    const url = `https://listaksesdb.pages.dev`;
 
     try {
       const response = await fetch(url);
