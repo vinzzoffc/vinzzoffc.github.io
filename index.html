@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Database Manager Vinzz</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background-color: #0a0a0a;
+      color: #00ffcc;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #ff0033;
+    }
+    .container {
+      width: 80%;
+      margin: auto;
+      background: #111;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #00ffcc;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      font-size: 16px;
+    }
+    input {
+      background: #222;
+      color: #fff;
+    }
+    button {
+      background: #00ffcc;
+      color: #000;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #009977;
+    }
+    pre {
+      background: #222;
+      padding: 10px;
+      text-align: left;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      margin-top: 10px;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #00ffcc;
+      padding: 8px;
+    }
+    th {
+      background: #333;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔐 Cyber Security Access </h1>
+<div class="container">
+  <h2>🛡️ API Key (Manual Input)</h2>
+  <input type="text" id="apikey" placeholder="Masukkan API Key Anda" />
+
+  <h2>➕ Tambah Akses</h2>
+  <input type="text" id="addNomor" placeholder="Nomor (62...) atau @tag" />
+  <input type="text" id="addNama" placeholder="Nama Pemilik Akses" />
+  <button onclick="addAkses()">Tambah Akses</button>
+  <pre id="addResult"></pre>
+
+  <h2>🗑️ Hapus Akses</h2>
+  <input type="text" id="delNomor" placeholder="Nomor (62...) atau @tag" />
+  <button onclick="delAkses()">Hapus Akses</button>
+  <pre id="delResult"></pre>
+
+  <h2>📜 Daftar Akses</h2>
+  <button onclick="listAkses()">Lihat Daftar</button>
+  <table id="aksesTable" class="hidden">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nomor</th>
+        <th>Nama</th>
+      </tr>
+    </thead>
+    <tbody id="aksesList"></tbody>
+  </table>
+</div>
+
+<script>
+  async function addAkses() {
+    const apikey = document.getElementById("apikey").value.trim();
+    const nomor = document.getElementById("addNomor").value.trim();
+    const nama = document.getElementById("addNama").value.trim();
+    const result = document.getElementById("addResult");
+
+    if (!nomor || !nama) {
+      result.textContent = "⚠️ Semua kolom harus diisi!";
+      return;
+    }
+
+    const url = `https://vinzzoffcmanager-db-restapi.pages.dev/add?apikey=${apikey}&nomor=${nomor}&nama=${nama}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      result.textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+      result.textContent = "⚠️ Terjadi kesalahan!";
+    }
+  }
+
+  async function delAkses() {
+    const apikey = document.getElementById("apikey").value.trim();
+    const nomor = document.getElementById("delNomor").value.trim();
+    const result = document.getElementById("delResult");
+
+    if (!nomor) {
+      result.textContent = "⚠️ Masukkan nomor yang ingin dihapus!";
+      return;
+    }
+
+    const url = `https://vinzzoffcmanager-db-restapi.pages.dev/delete?apikey=${apikey}&nomor=${nomor}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      result.textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+      result.textContent = "⚠️ Terjadi kesalahan!";
+    }
+  }
+
+  async function listAkses() {
+    const table = document.getElementById("aksesTable");
+    const tbody = document.getElementById("aksesList");
+    const url = `https://vinzzoffcmanager-list-restapi.pages.dev`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!data.success || !data.data.length) {
+        tbody.innerHTML = "<tr><td colspan='3'>⚠️ Tidak ada data!</td></tr>";
+        return;
+      }
+
+      tbody.innerHTML = "";
+      data.data.forEach((entry, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${entry.nomor}</td>
+            <td>${entry.nama}</td>
+          </tr>
+        `;
+      });
+
+      table.classList.remove("hidden");
+    } catch (error) {
+      tbody.innerHTML = "<tr><td colspan='3'>⚠️ Terjadi kesalahan!</td></tr>";
+    }
+  }
+</script>
+
+</body>
+</html>
